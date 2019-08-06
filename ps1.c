@@ -6,6 +6,7 @@ typedef unsigned int ui;
 ui* findMinInRow(ui *arr,int n);
 ui* findMaxInCol(ui *arr,int n);
 ui* combineS1S2(ui* s1, ui* s2, int n);
+ui isPrime(ui num);
 
 int main(int argc, char* argv[])
 {
@@ -64,15 +65,15 @@ int main(int argc, char* argv[])
 		printf("%d ",s[i]);
 	}
 
-	// printf("Prime numbers in the set 'S': ")
-	// for(int i=0; i<2*n; i++)
-	// {
-	// 	if(isPrime(s[i]))
-	// 		printf("%d ",s[i]);
-	// }
-
-
 	// find prime numbers
+	printf("\nPrime numbers in the set 'S': ");
+	for(int i=0; i<2*n; i++)
+	{
+		if(isPrime(s[i]) == 1)
+			printf("%d ",s[i]);
+	}
+
+
 
 
 	printf("\n");
@@ -147,11 +148,11 @@ ui isPrime(ui num)
 		return 1;
 	else
 	{
-		for(ui i=0; i<n; i++)
+		for(ui i=2; i<num; ++i)
 		{
-			
+			if(num % i == 0)
+				return 0;
 		}
 	}
-
-
+	return 1;
 }
