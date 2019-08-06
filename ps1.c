@@ -8,7 +8,7 @@ ui* findMinInRow(ui *arr,int n);
 ui* findMaxInCol(ui *arr,int n);
 ui* combineS1S2(ui* s1, ui* s2, int n);
 ui isPrime(ui num);
-
+int findSubStr(char* input_str, char* str);
 int main(int argc, char* argv[])
 {
 
@@ -93,10 +93,41 @@ int main(int argc, char* argv[])
 
 	printf("\"\nEnter a Substring: ");
 	scanf("%s",input_str);
-	// firstIdx = findSubStr(input_str);
-
+	
+	// firstIdx = findSubStr(input_str,str);
+	printf("You entered: %s\n",input_str);
 	// printf("First index for occurrence of substring is: %d",firstIdx);
 
+
+	// find local minima and maxima
+	int local_minima_indices[n];
+	int local_maxima_indices[n];
+	int lmin_idx=0, lmax_idx=0;
+	for(int i=1; i<2*n-1; i++)
+	{
+		if(s[i]<s[i+1] && s[i]<s[i-1])
+		{
+			local_minima_indices[lmin_idx] = i;
+			lmin_idx++;
+		}
+		else if(s[i]>s[i-1] && s[i]>s[i+1])
+		{
+			local_maxima_indices[lmax_idx] = i;
+			lmax_idx++;
+		}
+	}
+
+	printf("Local minima indices: ");
+	for(int i=0; i<lmin_idx; i++)
+	{
+		printf("%d ",local_minima_indices[i]);
+	}
+
+	printf("\nLocal maxima indices: ");
+	for(int i=0; i<lmax_idx; i++)
+	{
+		printf("%d ",local_maxima_indices[i]);
+	}
 
 
 	printf("\n");
@@ -178,4 +209,16 @@ ui isPrime(ui num)
 		}
 	}
 	return 1;
+}
+
+int findSubStr(char* input_str, char* str)
+{
+	// for(int i=0; str[i]!='\0'; i++)
+	// {
+	// 	if(str[i] != input_str[i])
+			
+	// }
+
+	return 0;
+
 }

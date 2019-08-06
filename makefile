@@ -1,3 +1,4 @@
+#!/bin/sh
 # --------------------------------------------------------
 # Define required macros here
 INCLUDE_DIR = .
