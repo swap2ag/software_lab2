@@ -1,5 +1,6 @@
 #include<stdio.h>	
 #include<stdlib.h>	// atoi
+#include<string.h>	//strcat
 
 
 typedef unsigned int ui;
@@ -10,17 +11,22 @@ ui isPrime(ui num);
 
 int main(int argc, char* argv[])
 {
+
 	if(argc!=2)
 	{
 		printf("Wrong format!!\nPlease enter ./ps1 [size]\n");
 		return -1;
 	}
 
-	int n = atoi(argv[1]);
 	
+	int n = atoi(argv[1]);
 	ui *A;
-	A = (ui*)malloc(sizeof(ui)*n*n);
+	char str[1024]={};
+	char tmp_str[100];
+	char input_str[1024];
+	int firstIdx;
 
+	A = (ui*)malloc(sizeof(ui)*n*n);
 
 	for(int i=0; i<n; ++i)
 	{
@@ -72,7 +78,24 @@ int main(int argc, char* argv[])
 		if(isPrime(s[i]) == 1)
 			printf("%d ",s[i]);
 	}
+	printf("\n");
 
+	// create string from set S
+	for(int i=0; i<2*n; i++)
+	{
+		sprintf(tmp_str,"%u",s[i]);
+		strcat(str,tmp_str);
+	}
+
+	printf("D = \"");
+	for(int i=0; str[i]!='\0'; i++)
+		printf("%c",str[i]);
+
+	printf("\"\nEnter a Substring: ");
+	scanf("%s",input_str);
+	// firstIdx = findSubStr(input_str);
+
+	// printf("First index for occurrence of substring is: %d",firstIdx);
 
 
 
