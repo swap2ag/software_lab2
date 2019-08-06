@@ -2,6 +2,7 @@
 #include<stdlib.h>	// atoi
 #include<string.h>	// strcmp
 
+// structure to store information about members
 struct members
 {
 	char name[100];
@@ -13,29 +14,31 @@ struct members
 	float multiplier;
 };
 
-
-void split_equally(struct members m[],int n);
-void split_unequally(struct members m[],int n);
-
+// functions for finding amt to pay for each member
+void split_equally(struct members m[],int n);  					// function to split amount equally
+void split_unequally(struct members m[],int n);					// function to split amount unequally
 void split_by_perc(struct members m[],int n);
 void split_by_shares(struct members m[],int n);
 
-void init_default(struct members *m);
-int find_mem_idx(struct members mem[],int n,char mem_name[]);
-void disp_all_mem(struct members mem[],int n);
-void final_calculations(struct members mem[],int n);
+void init_default(struct members *m);							// function to initialize the objects of structure
+int find_mem_idx(struct members mem[],int n,char mem_name[]);	// function to find the index of member based on name
+void disp_all_mem(struct members mem[],int n);					// function to display all members
+void final_calculations(struct members mem[],int n);			// function to display amount to be paid or to be received by each member
 
 int main(int argc, char* argv[])
 {
-
+	// validate no. of cmd line args
 	if(argc != 2)
 	{
 		printf("Wrong format!!\nPlease enter ./ps2 [no. of members involved in trip]\n");
 		return -1;
 	}
-	int n = atoi(argv[1]);
+
+	int n = atoi(argv[1]); // convert char* array to integer
 	struct members mem[n];
 	int choice;
+	
+	// Take the names as input and initialize each object
 	printf("Input the names of Members: \n");
 
 	for(int i=0; i<n; i++)
@@ -52,7 +55,8 @@ int main(int argc, char* argv[])
 	int continue_flag = 0;
 	scanf("%s",mem_name);
 	fflush(stdin);
-	
+
+	// start adding the expenses
 	while(strcmp(mem_name,"done") != 0)	
 	{
 		float amt_paid;
@@ -61,11 +65,8 @@ int main(int argc, char* argv[])
 		scanf("%f ",&amt_paid);
 		fflush(stdin);
 		scanf("%s", purpose);
-//=================================================================
-		printf("memname: %s\namt: %0.2f\npurpose: %s\n\n\n",mem_name,amt_paid,purpose);
-//=================================================================
 
-		memIdx = find_mem_idx(mem,n,mem_name);
+		memIdx = find_mem_idx(mem,n,mem_name);			// map each name to index
 		if(memIdx == -1)
 		{
 			printf("Invalid member\nEnter again:\n");
@@ -74,23 +75,19 @@ int main(int argc, char* argv[])
 		else
 			continue_flag = 0;
 
-		if(continue_flag == 0)
+		if(continue_flag == 0)							// update the information about the member
 		{
-			mem[memIdx].amt_paid += amt_paid;
+			mem[memIdx].amt_paid += amt_paid;			// previous amount paid is added to new amount paid
 			strcpy(mem[memIdx].purpose,"");
 			strcpy(mem[memIdx].purpose,purpose);
-			printf("Record entered successfully!!!\n");
 		}
 
 		scanf("%s",mem_name);
 	}
 
 	printf("All Expenses Added!");
-//=================================================================
-	printf("\nDisplaying mem info: \n");
-	disp_all_mem(mem,n);
-//=================================================================
 
+	// Give the choice to user
 	printf("Choose your option:\n");
 	printf("1. Split equally\n2. Split unequally\n3. Split by percentages\n4. Split by shares\n");
 	scanf("%d",&choice);
@@ -113,9 +110,10 @@ int main(int argc, char* argv[])
 		default:
 				printf("Invalid option!!");
 	}
-	// disp_all_mem(mem,n);
 
 	printf("\nFinal Calculations are\n");
+	
+	// Display final results of calculation based on user's choice
 	final_calculations(mem,n);
 	printf("\n");
 
@@ -130,6 +128,7 @@ void init_default(struct members *m)
 	m->contribution = 0.0;
 }
 
+// function to find the index of member based on name
 int find_mem_idx(struct members mem[],int n,char mem_name[])
 {
 	for(int i=0; i<n; i++)
@@ -139,6 +138,8 @@ int find_mem_idx(struct members mem[],int n,char mem_name[])
 	}
 	return -1;
 }
+
+// function to split amount equally
 void split_equally(struct members m[],int n)
 {
 	float total = 0.0;
@@ -147,16 +148,13 @@ void split_equally(struct members m[],int n)
 		total += m[i].amt_paid;
 	}
 	float split = total/n;
-	// printf("split: %0.2f\n",split);
 	for(int i=0; i<n; i++)
 	{
 		m[i].amt_to_pay = split - m[i].amt_paid;
-		// printf("have to pay: %f\n",m[i].amt_to_pay);
 	}
-
-	// disp_all_mem(m,n);
-
 }
+
+// function to split based on amount entered for each member
 void split_unequally(struct members m[],int n)
 {
 	printf("Enter contributions to total amount in terms of amount that has to be paid by ");
@@ -189,9 +187,10 @@ void split_unequally(struct members m[],int n)
 			m[i].amt_to_pay = m[i].contribution - m[i].amt_paid;
 		}
 	}
-	// disp_all_mem(m,n);
 
 }
+
+// function to split based on percentage 
 void split_by_perc(struct members m[],int n)
 {
 	printf("Enter contributions to total amount in terms of percentage that has to be paid by ");
@@ -224,6 +223,7 @@ void split_by_perc(struct members m[],int n)
 	}
 
 }
+// function to split amount based on share
 void split_by_shares(struct members m[],int n)
 {
 	printf("Enter contributions to total amount in terms of share for ");
@@ -245,11 +245,11 @@ void split_by_shares(struct members m[],int n)
 	for(int i=0; i<n; i++)
 	{
 		m[i].amt_to_pay = (split*m[i].multiplier - m[i].amt_paid);
-		printf("have to pay: %f\n",m[i].amt_to_pay);
 	}
 
 }
 
+// display all information about members
 void disp_all_mem(struct members mem[],int n)
 {
 	for(int i=0; i<n; i++)

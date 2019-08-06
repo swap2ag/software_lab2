@@ -1,17 +1,20 @@
 #include<stdio.h>	
-#include<stdlib.h>	// atoi
-#include<string.h>	//strcat
+#include<stdlib.h>	// atoi()
+#include<string.h>	// strcat()
 
 typedef unsigned int ui;
-ui* findMinInRow(ui *arr,int n);
-ui* findMaxInCol(ui *arr,int n);
-ui* combineS1S2(ui* s1, ui* s2, int n);
-ui isPrime(ui num);
-int findSubStr(char* input_str, char* str);
+
+
+ui* findMinInRow(ui *arr,int n); 			// function to find minimum element in a row
+ui* findMaxInCol(ui *arr,int n); 			// function to find maximum element in a column 
+ui* combineS1S2(ui* s1, ui* s2, int n);		// function to combine sets s1 and s2
+ui isPrime(ui num);							// function to find whether a number is prime
+int findSubStr(char* input_str, char* str);	// function to find the first occurrence of a string in other string
 
 int main(int argc, char* argv[])
 {
 
+	// validate the number of command line arguments
 	if(argc!=2)
 	{
 		printf("Wrong format!!\nPlease enter ./ps1 [size]\n");
@@ -26,6 +29,7 @@ int main(int argc, char* argv[])
 	char input_str[1024];
 	int firstIdx;
 
+	// create the matrix
 	A = (ui*)malloc(sizeof(ui)*n*n);
 
 	for(int i=0; i<n; ++i)
@@ -36,7 +40,7 @@ int main(int argc, char* argv[])
 		}
 	}
 	
-	// find min in each row
+	// find minimum element in each row
 	ui* s1 = findMinInRow((ui*) A,n);
 	printf("S1 = ");
 	for(int i=0; i<n; i++)
@@ -44,7 +48,7 @@ int main(int argc, char* argv[])
 		printf("%u ",s1[i]);
 	}
 
-	// find max in each row
+	// find maximum element in each column
 	ui* s2 = findMaxInCol((ui*) A,n);
 
 	printf("\nS2 = ");
@@ -53,7 +57,7 @@ int main(int argc, char* argv[])
 		printf("%u ",s2[i]);
 	}
 
-	// combine s1 and s2
+	// combine s1 and s2 to form s
 	ui* s = combineS1S2(s1,s2,n);
 
 	printf("\nS = ");
@@ -62,7 +66,7 @@ int main(int argc, char* argv[])
 		printf("%d ",s[i]);
 	}
 
-	// find prime numbers
+	// find prime numbers in set s
 	printf("\nPrime numbers in the set 'S': ");
 	for(int i=0; i<2*n; i++)
 	{
@@ -82,10 +86,12 @@ int main(int argc, char* argv[])
 	for(int i=0; str[i]!='\0'; i++)
 		printf("%c",str[i]);
 
+	// prompt user for input
 	printf("\"\nEnter a Substring: ");
 	scanf("%s",input_str);
 	printf("You entered: %s\n",input_str);
 
+	// find the first occurrence of substring
 	firstIdx = findSubStr(input_str, str);
 	if(firstIdx != -1)
 	{
@@ -96,9 +102,10 @@ int main(int argc, char* argv[])
 		printf("No substring matched\n");
 	}
 
-	// find local minima and maxima
-	int local_minima_indices[n];
-	int local_maxima_indices[n];
+	// find local minima and maxima in set s
+	int local_minima_indices[n];	// array to store local minima indices
+	int local_maxima_indices[n];	// array to store local maxima indices
+
 	int lmin_idx=0, lmax_idx=0, lmin_flag=0, lmax_flag=0;
 	for(int i=1; i<2*n-1; i++)
 	{
@@ -115,9 +122,9 @@ int main(int argc, char* argv[])
 			lmax_idx++;
 		}
 	}
-
+	// display local minima indices
 	printf("Local minima indices: ");
-	if(lmin_flag == 1)
+	if(lmin_flag == 1) // if local minima exist
 	{
 		for(int i=0; i<lmin_idx; i++)
 		{
@@ -129,7 +136,8 @@ int main(int argc, char* argv[])
 		printf("No local minima found!!\n");
 	}
 
-	if(lmax_flag == 1)
+	// display local minima indices
+	if(lmax_flag == 1) // if local maxima exist
 	{
 		printf("\nLocal maxima indices: ");
 		for(int i=0; i<lmax_idx; i++)
